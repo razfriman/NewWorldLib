@@ -43,23 +43,16 @@ public class PakFileEntry : IDisposable
         }
 
         var data = Reader.ReadBytes(Length);
-        switch (Method)
+        Data = Method switch
         {
-            case 0:
-                Data = data;
-                IsLoaded = true;
-                break;
-            case 15:
-                // Oodle
-                var decompressed = new byte[DecompressedLength];
-                Oodle.Decompress(data, 0, data.Length, decompressed, 0, DecompressedLength);
-                Data = decompressed;
-                IsLoaded = true;
-                break;
-            default:
-                throw new DataException($"Unknown compression method: {Method}");
-        }
+            0 => data,
+            8 => DataDecompressor.DecompressDeflate(data, DecompressedLength),
+            15 => DataDecompressor.DecompressOodle(data, DecompressedLength),
+            _ => throw new DataException($"Unknown compression method: {Method}")
+        };
+        IsLoaded = true;
     }
+
 
     public static short ParseHeaderId(BinaryReader reader)
     {

@@ -8,7 +8,7 @@ var entries = new HashSet<string>();
 
 foreach (var file in files)
 {
-    var pakFile = PakFile.Parse(file);
+    using var pakFile = PakFile.Parse(file);
     pakFile.Save(outputDir);
     foreach (var entry in pakFile.Entries.Keys)
     {
