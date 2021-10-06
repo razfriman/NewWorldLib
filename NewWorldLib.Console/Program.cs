@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using NewWorldLib;
 
-var dir = "/Users/razfriman/Downloads/NEW WORLD/assets/";
+var dir = @"D:\SteamLibrary\steamapps\common\New World\assets";
 var outputDir = "extracted";
 var files = Directory.GetFiles(dir, "*.pak", SearchOption.AllDirectories);
 var entries = new HashSet<string>();

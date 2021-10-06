@@ -45,9 +45,15 @@ public class PakFileEntry : IDisposable
         var data = Reader.ReadBytes(Length);
         switch (Method)
         {
+            case 0:
+                Data = data;
+                IsLoaded = true;
+                break;
             case 15:
                 // Oodle
-                Data = Oodle.DecompressReplayData(data, DecompressedLength);
+                var decompressed = new byte[DecompressedLength];
+                Oodle.Decompress(data, 0, data.Length, decompressed, 0, DecompressedLength);
+                Data = decompressed;
                 IsLoaded = true;
                 break;
             default:
