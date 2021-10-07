@@ -6,9 +6,16 @@ public class DataDecompressor
 {
     public static byte[] DecompressOodle(byte[] compressedData, int decompressedLength)
     {
-        var decompressed = new byte[decompressedLength];
-        Oodle.Decompress(compressedData, 0, compressedData.Length, decompressed, 0, decompressedLength);
-        return decompressed;
+        if (OperatingSystem.IsWindows())
+        {
+            var decompressed = new byte[decompressedLength];
+            Oodle.Decompress(compressedData, 0, compressedData.Length, decompressed, 0, decompressedLength);
+            return decompressed;    
+        }
+        else
+        {
+            return Array.Empty<byte>();
+        }
     }
 
     public static byte[] DecompressDeflate(byte[] compressedData, int decompressedLength)

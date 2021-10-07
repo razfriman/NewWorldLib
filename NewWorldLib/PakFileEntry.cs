@@ -78,7 +78,7 @@ public class PakFileEntry : IDisposable
                 var verMade = Reader.ReadInt16();
                 var verNeed = Reader.ReadInt16();
                 var flag = Reader.ReadInt16();
-                var method = Reader.ReadInt16();
+                Method = Reader.ReadInt16();
                 var modTime = Reader.ReadInt16();
                 var modDate = Reader.ReadInt16();
                 var crc = Reader.ReadInt32();
