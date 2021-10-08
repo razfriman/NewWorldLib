@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Update="oo2core_8_win64.dll">
+      <None Update="Libraries\oo2core_8_win64.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

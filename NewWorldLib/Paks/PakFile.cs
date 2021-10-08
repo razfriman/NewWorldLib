@@ -10,7 +10,11 @@ public class PakFile : IDisposable
     public Dictionary<string, PakFileEntry> Entries { get; } = new();
     public BinaryReader Reader { get; set; }
 
-    public static PakFile Parse(string path) => Parse(File.OpenRead(path));
+    public static PakFile Parse(string path)
+    {
+        using var stream = File.OpenRead(path);
+        return Parse(stream);
+    }
 
     public static PakFile Parse(Stream stream)
     {
