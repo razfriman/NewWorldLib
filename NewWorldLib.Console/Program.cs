@@ -34,13 +34,13 @@ void ReadPaks()
 void ReadDatasheets()
 {
     Console.WriteLine("Read Datasheets");
-    var datasheet = Datasheet.Parse("/Users/razfriman/Downloads/datatables/javelindata_tradeskillmining.datasheet");
+    var file = "/Users/razfriman/Downloads/datatables/javelindata_tradeskillmining.datasheet";
+    var datasheet = Datasheet.Parse(file);
     var json = JsonSerializer.Serialize(datasheet, new JsonSerializerOptions()
     {
         WriteIndented = true
     });
     Console.WriteLine(json);
-    Console.WriteLine("nice");
 }
 
 // ReadPaks();
