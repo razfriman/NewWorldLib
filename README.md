@@ -1,13 +1,20 @@
 # NewWorldLib
 
-This library provides functionality to parse and extract `.pak` files used by Amazon's New World.
+This library provides functionality to assist with reading files used by Amazon's New World.
 
-Data is compressed using `Oodle`. `OozSharp` is currently used to perform the decompression however it does not implement all of the modes that New World uses. Unfortunately this will need to be replaced by the official `Oodle` library in order for all of the files to be decompressed properly.
+---
 
-# NewWorldLib.Console
+## Paks
 
-This is a sample application that shows how to extract the files from the `.pak` asset files of the New World game.
+Reads and extracts `.pak` (CryPak) files.
 
-# NewWorldLib.Discord
+### Dependencies
 
-Still under construction. 
+Windows is required because of a dependency on the included Oodle DLL
+
+---
+
+## Datasheets
+
+Reads `.datasheet` files. This is tabular CSV-like data stored in a bianry format.
+
