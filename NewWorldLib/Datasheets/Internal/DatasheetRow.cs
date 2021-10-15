@@ -1,4 +1,4 @@
-namespace NewWorldLib.Datasheets;
+namespace NewWorldLib.Datasheets.Internal;
 
 public class DatasheetRow
 {

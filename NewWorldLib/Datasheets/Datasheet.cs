@@ -1,13 +1,11 @@
+using NewWorldLib.Datasheets.Internal;
 using NewWorldLib.Extensions;
 
 namespace NewWorldLib.Datasheets;
 
 public class Datasheet
 {
-    public DatasheetHeader Header { get; set; }
-    public DatasheetMetadata Metadata { get; set; }
-    public List<DatasheetColumn> Columns { get; set; } = new();
-    public List<DatasheetRow> Rows { get; set; } = new();
+    public List<Dictionary<string, DatasheetProperty>> Items { get; } = new();
 
     public static Datasheet Parse(string path)
     {
@@ -17,21 +15,49 @@ public class Datasheet
 
     public static Datasheet Parse(Stream stream)
     {
-        var datasheet = new Datasheet();
         using var reader = new BinaryReader(stream);
-        datasheet.Parse(reader);
+        var datasheet = new Datasheet();
+
+        var header = ParseHeader(reader);
+        var metadata = ParseMetadata(reader);
+        var columns = ParseColumns(reader, metadata, header);
+        var rows = ParseRows(reader, metadata, header);
+
+        foreach (var row in rows)
+        {
+            var item = new Dictionary<string, DatasheetProperty>();
+
+            for (var i = 0; i < columns.Count; i++)
+            {
+                var column = columns[i];
+                var columnValue = row.Cells[i];
+                item[column.ColumnName] = column.ColumnType switch
+                {
+                    DatasheetColumnType.Int => new DatasheetIntProperty
+                    {
+                        Name = column.ColumnName,
+                        Value = columnValue.ValueString == "" ? null : int.Parse(columnValue.ValueString)
+                    },
+                    DatasheetColumnType.Float => new DatasheetFloatProperty
+                    {
+                        Value = columnValue.ValueString == "" ? null : float.Parse(columnValue.ValueString)
+                    },
+                    DatasheetColumnType.String => new DatasheetStringProperty
+                    {
+                        Value = columnValue.ValueString == "" ? null : columnValue.ValueString
+                    },
+                    _ => item[column.ColumnName]
+                };
+            }
+
+            datasheet.Items.Add(item);
+        }
+
         return datasheet;
     }
 
-    public void Parse(BinaryReader reader)
-    {
-        Header = ParseHeader(reader);
-        Metadata = ParseMetadata(reader);
-        Columns = ParseColumns(reader);
-        Rows = ParseRows(reader);
-    }
 
-    public DatasheetHeader ParseHeader(BinaryReader reader)
+    public static DatasheetHeader ParseHeader(BinaryReader reader)
     {
         var header = new DatasheetHeader
         {
@@ -57,7 +83,7 @@ public class Datasheet
     }
 
 
-    public DatasheetMetadata ParseMetadata(BinaryReader reader) => new()
+    public static DatasheetMetadata ParseMetadata(BinaryReader reader) => new()
     {
         Crc32 = reader.ReadInt32(),
         Unknown1 = reader.ReadInt32(),
@@ -69,43 +95,43 @@ public class Datasheet
         Unknown5 = reader.ReadInt32(),
     };
 
-    public List<DatasheetColumn> ParseColumns(BinaryReader reader)
+    public static List<DatasheetColumn> ParseColumns(BinaryReader reader, DatasheetMetadata metadata,
+        DatasheetHeader header)
     {
         var result = new List<DatasheetColumn>();
 
-        for (var i = 0; i < Metadata.ColumnCount; i++)
+        for (var i = 0; i < metadata.ColumnCount; i++)
         {
             var column = new DatasheetColumn
             {
                 Unknown1 = reader.ReadInt32(),
                 ColumnNameOffset = reader.ReadInt32(),
-                ColumnType = reader.ReadInt32(),
+                ColumnType = (DatasheetColumnType)reader.ReadInt32(),
             };
-            column.ColumnName = reader.ReadNullTerminatedString(column.ColumnNameOffset, Header);
+            column.ColumnName = reader.ReadNullTerminatedString(column.ColumnNameOffset, header);
             result.Add(column);
         }
 
         return result;
     }
 
-    public List<DatasheetRow> ParseRows(BinaryReader reader)
+    public static List<DatasheetRow> ParseRows(BinaryReader reader, DatasheetMetadata metadata, DatasheetHeader header)
     {
         var result = new List<DatasheetRow>();
 
-        for (var i = 0; i < Metadata.RowCount; i++)
+        for (var i = 0; i < metadata.RowCount; i++)
         {
             var row = new DatasheetRow();
-            for (var j = 0; j < Metadata.ColumnCount; j++)
+            for (var j = 0; j < metadata.ColumnCount; j++)
             {
                 var cell = new DatasheetCell
                 {
                     ValueOffset = reader.ReadInt32(),
-                    ValueDuplicate = reader.ReadInt32(),
+                    Unknown1 = reader.ReadInt32(),
                 };
-                cell.Value = reader.ReadNullTerminatedString(cell.ValueOffset, Header);
+                cell.ValueString = reader.ReadNullTerminatedString(cell.ValueOffset, header);
                 row.Cells.Add(cell);
             }
-
             result.Add(row);
         }
 

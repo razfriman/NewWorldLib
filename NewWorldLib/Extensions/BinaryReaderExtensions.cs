@@ -1,5 +1,6 @@
 using System.Text;
 using NewWorldLib.Datasheets;
+using NewWorldLib.Datasheets.Internal;
 
 namespace NewWorldLib.Extensions;
 

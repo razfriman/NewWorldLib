@@ -1,33 +1,21 @@
-using System.Text.Json.Serialization;
-
-namespace NewWorldLib.Datasheets;
+namespace NewWorldLib.Datasheets.Internal;
 
 public class DatasheetHeader
 {
-    [JsonIgnore]
     public int HeaderSize => 60;
     public int Version { get; set; }
-    [JsonIgnore]
     public int Unknown1 { get; set; }
     public int UniqueIdOffset { get; set; }
-    [JsonIgnore]
     public int Unknown2 { get; set; }
     public int DataTypeOffset { get; set; }
     public int RowNumber { get; set; }
     public int PlainTextLength { get; set; }
-    [JsonIgnore]
     public int Unknown3 { get; set; }
-    [JsonIgnore]
     public int Unknown4 { get; set; }
-    [JsonIgnore]
     public int Unknown5 { get; set; }
-    [JsonIgnore]
     public int Unknown6 { get; set; }
-    [JsonIgnore]
     public int Unknown7 { get; set; }
-    [JsonIgnore]
     public int Unknown8 { get; set; }
-    [JsonIgnore]
     public int Unknown9 { get; set; }
     public int PlainTextOffset { get; set; }
     public string UniqueId { get; set; }
