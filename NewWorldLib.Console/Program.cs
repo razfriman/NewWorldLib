@@ -6,7 +6,7 @@ void ReadPaks()
 {
     Console.WriteLine("Read Paks");
     var dir = OperatingSystem.IsWindows()
-        ? @"D:\SteamLibrary\steamapps\common\New World\assets"
+        ? @"D:\SteamLibrary\steamapps\common\New World Public Test Realm/assets"
         : "/Users/razfriman/Downloads/NEW WORLD/assets";
     var outputDir = "extracted";
     var files = Directory.GetFiles(dir, "*.pak", SearchOption.AllDirectories);
@@ -34,16 +34,20 @@ void ReadPaks()
 void ReadDatasheets()
 {
     Console.WriteLine("Read Datasheets");
-    var file = "/Users/razfriman/Downloads/datatables/javelindata_tradeskillmining.datasheet";
+    var dir = @"C:\Users\razfr\Desktop\out\sharedassets\springboardentitites\datatables";
+    foreach(var file in Directory.GetFiles(dir, "*.datasheet"))
+    {
     var datasheet = Datasheet.Parse(file);
     var json = JsonSerializer.Serialize(datasheet, new JsonSerializerOptions()
     {
         WriteIndented = true
     });
-    Console.WriteLine(json);
+    File.WriteAllText(Path.ChangeExtension(file, "json"), json);
+    Console.WriteLine(file);
+    }
 }
 
-// ReadPaks();
+//ReadPaks();
 ReadDatasheets();
 
 Console.WriteLine("Done");

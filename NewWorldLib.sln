@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWorldLib", "NewWorldLib\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWorldLib.Console", "NewWorldLib.Console\NewWorldLib.Console.csproj", "{CDD0ADD5-B43A-4325-8136-E9E186A21C13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewWorldLib.Discord", "NewWorldLib.Discord\NewWorldLib.Discord.csproj", "{23991563-A484-4824-9382-77080A858AA0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +18,5 @@ Global
 		{CDD0ADD5-B43A-4325-8136-E9E186A21C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDD0ADD5-B43A-4325-8136-E9E186A21C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDD0ADD5-B43A-4325-8136-E9E186A21C13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23991563-A484-4824-9382-77080A858AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23991563-A484-4824-9382-77080A858AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23991563-A484-4824-9382-77080A858AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23991563-A484-4824-9382-77080A858AA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
